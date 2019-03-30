@@ -1,13 +1,14 @@
 package com.company.Lesterbrary;
 
-public class CSCPath {
+import java.awt.*;
+
+public class CSCPath extends DubinsPath{
     private Arc a1, a3;
     private LineSegment l2;
-    private boolean isValid;
     private double length;
 
-    public CSCPath(Arc a1, LineSegment l2, Arc a3){
-        this.isValid = true;
+    public CSCPath(Arc a1, LineSegment l2, Arc a3, PATHTYPE p){
+        super(p);
         this.a1 = a1;
         this.l2 = l2;
         this.a3 = a3;
@@ -15,13 +16,10 @@ public class CSCPath {
     }
 
     public CSCPath(boolean isValid){
-        isValid = false;
+        super(PATHTYPE.INVALID);
     }
 
-    public boolean isValid(){
-        return isValid;
-    }
-
+    @Override
     public double getLength(){
         return length;
     }

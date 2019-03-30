@@ -15,20 +15,30 @@ public class DrawLester extends JPanel {
         g2d.drawLine(320,0,320,480);
         g2d.drawLine(0, 240, 640, 240);
 
-        long time = System.currentTimeMillis();
-        Pose p1 = new Pose(123,99.995, Math.toRadians(340));
-        Pose p2 = new Pose(45,118, Math.toRadians(0));
+        //long time = System.currentTimeMillis();
+        Pose p1 = new Pose(-34,5, Math.toRadians(0));
+        Pose p2 = new Pose(100,182, Math.toRadians(45));
 
-        CCCPath rlr = Lester.generateRLRPath(p1,p2,50);
+        /*CCCPath rlr = Lester.generateRLRPath(p1,p2,50);
         CCCPath lrl = Lester.generateLRLPath(p1,p2,50);
         CSCPath rsr = Lester.generateRSRPath(p1,p2,50);
         CSCPath lsl = Lester.generateLSLPath(p1,p2,50);
         CSCPath rsl = Lester.generateRSLPath(p1,p2,50);
         CSCPath lsr = Lester.generateLSRPath(p1,p2,50);
 
-        System.out.println("Elapsed Time: " + (System.currentTimeMillis() - time));
+        System.out.println("Elapsed Time: " + (System.currentTimeMillis() - time));*/
+
+        long time = System.currentTimeMillis();
+
+        DubinsPath shortest = Lester.generateDubinsPath(p1, p2, 50);
+        System.out.println("Elapsed time 2: " + (System.currentTimeMillis() - time));
+
+        System.out.println("Shortest length: " + shortest.getLength());
 
         g2d.setColor(Color.BLUE);
+        Utils.drawDubinsPath(shortest, g2d, "Path");
+
+        /*g2d.setColor(Color.BLUE);
         Utils.drawCCCPath(rlr, g2d, "RLR");
         g2d.setColor(Color.BLACK);
         Utils.drawCCCPath(lrl, g2d, "LRL");
@@ -39,7 +49,7 @@ public class DrawLester extends JPanel {
         g2d.setColor(Color.GREEN);
         Utils.drawCSCPath(rsl, g2d, "RSL");
         g2d.setColor(Color.MAGENTA);
-        Utils.drawCSCPath(lsr, g2d, "LSR");
+        Utils.drawCSCPath(lsr, g2d, "LSR");*/
     }
 
     @Override

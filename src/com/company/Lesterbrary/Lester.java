@@ -1,5 +1,10 @@
 package com.company.Lesterbrary;
 
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
 public class Lester {
 
     public static double getDistance(Point a, Point b){
@@ -140,7 +145,7 @@ public class Lester {
             Arc a1 = new Arc(c.getCenter(), radius, a, t1, Arc.Direction.RIGHT);
             Arc a2 = new Arc(e.getCenter(), radius, t1, t2, Arc.Direction.LEFT);
             Arc a3 = new Arc(d.getCenter(), radius, t2, b, Arc.Direction.RIGHT);
-            CCCPath out = new CCCPath(a1,a2,a3);
+            CCCPath out = new CCCPath(a1,a2,a3, DubinsPath.PATHTYPE.RLR);
             return out;
         } else{
             return new CCCPath(false);
@@ -169,7 +174,7 @@ public class Lester {
             Arc a1 = new Arc(c.getCenter(), radius, a, t1, Arc.Direction.LEFT);
             Arc a2 = new Arc(e.getCenter(), radius, t1, t2, Arc.Direction.RIGHT);
             Arc a3 = new Arc(d.getCenter(), radius, t2, b, Arc.Direction.LEFT);
-            CCCPath out = new CCCPath(a1,a2,a3);
+            CCCPath out = new CCCPath(a1,a2,a3, DubinsPath.PATHTYPE.LRL);
             return out;
         } else{
             return new CCCPath(false);
@@ -183,7 +188,7 @@ public class Lester {
 
         Arc a1 = new Arc(c.getCenter(), radius, a, l2.getA(), Arc.Direction.RIGHT);
         Arc a3 = new Arc(d.getCenter(), radius, l2.getB(), b, Arc.Direction.RIGHT);
-        CSCPath out = new CSCPath(a1, l2, a3);
+        CSCPath out = new CSCPath(a1, l2, a3, DubinsPath.PATHTYPE.RSR);
         return out;
     }
 
@@ -194,7 +199,7 @@ public class Lester {
 
         Arc a1 = new Arc(c.getCenter(), radius, a, l2.getA(), Arc.Direction.LEFT);
         Arc a3 = new Arc(d.getCenter(), radius, l2.getB(), b, Arc.Direction.LEFT);
-        CSCPath out = new CSCPath(a1, l2, a3);
+        CSCPath out = new CSCPath(a1, l2, a3, DubinsPath.PATHTYPE.LSL);
         return out;
     }
 
@@ -206,7 +211,7 @@ public class Lester {
 
             Arc a1 = new Arc(c.getCenter(), radius, a, l2.getA(), Arc.Direction.RIGHT);
             Arc a3 = new Arc(d.getCenter(), radius, l2.getB(), b, Arc.Direction.LEFT);
-            CSCPath out = new CSCPath(a1, l2, a3);
+            CSCPath out = new CSCPath(a1, l2, a3, DubinsPath.PATHTYPE.RSL);
             return out;
         } else{
             return new CSCPath(false);
@@ -221,10 +226,39 @@ public class Lester {
 
             Arc a1 = new Arc(c.getCenter(), radius, a, l2.getA(), Arc.Direction.LEFT);
             Arc a3 = new Arc(d.getCenter(), radius, l2.getB(), b, Arc.Direction.RIGHT);
-            CSCPath out = new CSCPath(a1, l2, a3);
+            CSCPath out = new CSCPath(a1, l2, a3, DubinsPath.PATHTYPE.LSR);
             return out;
         } else{
             return new CSCPath(false);
         }
+    }
+
+    public static DubinsPath generateDubinsPath(Pose a, Pose b, double radius) {
+        ArrayList<DubinsPath> paths = new ArrayList<DubinsPath>();
+
+        paths.add(Lester.generateRLRPath(a, b, radius));
+        paths.add(Lester.generateLRLPath(a, b, radius));
+        paths.add(Lester.generateRSRPath(a, b, radius));
+        paths.add(Lester.generateLSLPath(a, b, radius));
+        paths.add(Lester.generateRSLPath(a, b, radius));
+        paths.add(Lester.generateLSRPath(a, b, radius));
+
+        boolean first = true;
+        double minimum = 0;
+        DubinsPath out = new CSCPath(false);
+        for(DubinsPath p : paths){
+            if(p.isValid()){
+                if(first){
+                    first = false;
+                    minimum = p.getLength();
+                } else{
+                    if(minimum > p.getLength()){
+                        minimum = p.getLength();
+                        out = p;
+                    }
+                }
+            }
+        }
+        return out;
     }
 }

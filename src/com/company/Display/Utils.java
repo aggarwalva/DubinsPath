@@ -54,4 +54,15 @@ public class Utils {
             System.out.println(name + " is invalid");
         }
     }
+
+    public static void drawDubinsPath(DubinsPath p, Graphics2D g, String name){
+        DubinsPath.PATHTYPE t = p.getType();
+        if(t == DubinsPath.PATHTYPE.LSL || t == DubinsPath.PATHTYPE.LSR || t == DubinsPath.PATHTYPE.RSL || t == DubinsPath.PATHTYPE.RSR){
+            drawCSCPath((CSCPath)p, g, name);
+        } else if(t == DubinsPath.PATHTYPE.LRL || t == DubinsPath.PATHTYPE.RLR){
+            drawCCCPath((CCCPath) p, g, name);
+        } else{
+            System.out.println(name + " is invalid");
+        }
+    }
 }

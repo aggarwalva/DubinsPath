@@ -1,12 +1,11 @@
 package com.company.Lesterbrary;
 
-public class CCCPath {
+public class CCCPath extends DubinsPath{
     private Arc a1, a2, a3;
-    private boolean isValid;
     private double length;
 
-    public CCCPath(Arc a1, Arc a2, Arc a3){
-        this.isValid = true;
+    public CCCPath(Arc a1, Arc a2, Arc a3, PATHTYPE p){
+        super(p);
         this.a1 = a1;
         this.a2 = a2;
         this.a3 = a3;
@@ -14,13 +13,10 @@ public class CCCPath {
     }
 
     public CCCPath(boolean isValid){
-        this.isValid = isValid;
+        super(PATHTYPE.INVALID);
     }
 
-    public boolean isValid(){
-        return isValid;
-    }
-
+    @Override
     public double getLength(){
         return length;
     }
